@@ -201,7 +201,7 @@ class Exporter:
             raise SystemError("Edge TPU export only supported on Linux. See https://coral.ai/docs/edgetpu/compiler/")
 
         # Input
-        im = torch.zeros(self.args.batch, 3, *self.imgsz).to(self.device)
+        im = torch.zeros(self.args.batch, 1, *self.imgsz).to(self.device)
         file = Path(
             getattr(model, "pt_path", None) or getattr(model, "yaml_file", None) or model.yaml.get("yaml_file", "")
         )
@@ -533,7 +533,7 @@ class Exporter:
             *pnnx_args,
             f"fp16={int(self.args.half)}",
             f"device={self.device.type}",
-            f'inputshape="{[self.args.batch, 3, *self.imgsz]}"',
+            f'inputshape="{[self.args.batch, 1, *self.imgsz]}"',
         ]
         f.mkdir(exist_ok=True)  # make ncnn_model directory
         LOGGER.info(f"{prefix} running '{' '.join(cmd)}'")
